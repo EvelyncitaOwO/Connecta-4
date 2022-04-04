@@ -57,48 +57,42 @@ public class Connecta4Prova {
             System.out.println("Indique la columna:");
 
             x = leer.nextInt();
-            x--;
-            int contador=0;
-            for (int i=tauler.length-1;i>0;i--){
 
-                if (!jugador2){
-                    if (tauler[i][x]!="[x]" && tauler[i][x]!="[O]"){
-                        tauler[i][x]="[x]";
-                        jugador2=true;
-                    }else {
-                        contador++;
+            if (x>0 && x<9){
+                x--;
+
+                for (int i=tauler.length-1;i>0;i--){
+
+                    if (!jugador2){
+
+                        if (tauler[i][x]!="[x]" && tauler[i][x]!="[O]"){
+                            tauler[i][x]="[x]";
+                            jugador2=true;
+                        }
                     }
                 }
+            }else{
+                System.out.println("Error, seleccione una columna válida");
             }
         }jugador2=false;
     }
 
     public void Bot(){
 
-        Random r = new Random();
-
         while (!jugador2){
 
+            int x = (int) (Math.random() * cols);
 
-            System.out.println("Turno del jugador 1");
-            System.out.println("Indique la columna:");
-
-            int x =r.nextInt(9);
-            x--;
-            int contador=0;
             for (int i=tauler.length-1;i>0;i--){
 
                 if (!jugador2){
                     if (tauler[i][x]!="[x]" && tauler[i][x]!="[O]"){
                         tauler[i][x]="[O]";
                         jugador2=true;
-                    }else {
-                        contador++;
                     }
                 }
             }
         }jugador2=false;
-
     }
 
     public void Moviment(){
