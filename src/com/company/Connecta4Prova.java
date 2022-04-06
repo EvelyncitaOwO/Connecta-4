@@ -11,10 +11,15 @@ public class Connecta4Prova {
     private boolean jugador2=false;
     private boolean acabat=false;
     private String guanyador;
+    private String[] nombres;
+    private String[] simbolos;
+    private int turno;
 
     public void initConnecta4(){
+        simbolos= new String[]{"[x]","[O]"};
+        nombres= new String[]{"Jugador 1","Jugador 2"};
+
         CrearTauler();
-        DibuixarTauler();
         Moviment();
     }
 
@@ -45,16 +50,13 @@ public class Connecta4Prova {
         }
     }
 
-    public void ComprovarGuanyador(String caracter){
+    public void ComprovarGuanyador(String caracter,String jugador){
 
         for (int i = 0; i < rows ; i++) {
             for (int j = 0; j < cols -3; j++) {
                 if (tauler[i][j]==caracter && tauler[i][j+1]==caracter && tauler[i][j+2]==caracter && tauler[i][j+3]==caracter){
-                    if (caracter == "[x]"){
-                        guanyador="Jugador 1";
-                    }else{
-                        guanyador="Bot";
-                    }acabat=true;
+                    guanyador=jugador;
+                    acabat=true;
                 }
             }
         }
@@ -62,25 +64,42 @@ public class Connecta4Prova {
         for (int i = 0; i < rows -3; i++) {
             for (int j = 0; j < cols; j++) {
                 if (tauler[i][j]==caracter && tauler[i+1][j]==caracter && tauler[i+2][j]==caracter && tauler[i+3][j]==caracter){
-                    if (caracter == "[x]"){
-                        guanyador="Jugador 1";
-                    }else{
-                        guanyador="Bot";
-                    }acabat=true;
+                    guanyador=jugador;
+                    acabat=true;
+                }
+            }
+        }
+
+        for (int i = 0; i < rows -3; i++) {
+            for (int j = 0; j < cols -3; j++) {
+                if (tauler[i][j]==caracter && tauler[i+1][j+1]==caracter && tauler[i+2][j+2]==caracter && tauler[i+3][j+3]==caracter){
+                    guanyador=jugador;
+                    acabat=true;
+                }
+            }
+        }
+
+        for (int i = rows-1; i > 3; i--) {
+            for (int j = 0; j < cols -3; j++) {
+                if (tauler[i][j]==caracter && tauler[i-1][j+1]==caracter && tauler[i-2][j+2]==caracter && tauler[i-3][j+3]==caracter){
+                    guanyador=jugador;
+                    acabat=true;
                 }
             }
         }
     }
 
-    public void Jugador1(){
+    public void Jugador1(String caracter, String jugador){
 
         boolean check=true;
         int x;
+
+        DibuixarTauler();
         while (!jugador2){
 
             Scanner leer = new Scanner(System.in);
 
-            System.out.println("Turno del jugador 1");
+            System.out.println("Turno de "+jugador);
             System.out.println("Indique la columna:");
 
             x = leer.nextInt();
@@ -93,7 +112,8 @@ public class Connecta4Prova {
                     if (!jugador2) {
 
                         if (tauler[i][x] != "[x]" && tauler[i][x] != "[O]") {
-                            tauler[i][x] = "[x]";
+                            tauler[i][x] = caracter;
+                            turno++;
                             jugador2 = true;
                         }else {
                             if (check){
@@ -106,37 +126,66 @@ public class Connecta4Prova {
             }else{
                 System.out.println("Error, seleccione una columna válida");
             }
-        }jugador2=false;
+        }
+        jugador2=false;
+        ComprovarGuanyador(caracter,jugador);
     }
 
-    public void Bot(){
+    public void Bot(String caracter, String jugador){
+
+        int x=0;
+        boolean random=false;
 
         while (!jugador2){
 
-            int x = (int) (Math.random() * cols);
-
-            for (int i=tauler.length-1;i>0;i--){
-
-                if (!jugador2){
-                    if (tauler[i][x]!="[x]" && tauler[i][x]!="[O]"){
-                        tauler[i][x]="[O]";
-                        jugador2=true;
+            for (int i = 0; i < rows ; i++) {
+                for (int j = 0; j < cols -3; j++) {
+                    if (tauler[i][j]=="[x]" && tauler[i][j+1]=="[x]" && tauler[i][j+2]=="[x]" && tauler[i][j+3]!="[x]" && tauler[i][j+3]!="[O]"){
+                        x=j+3;
+                        break;
+                    }else{
+                        x = (int) (Math.random() * cols);
+                        random=true;
                     }
                 }
             }
+            for (int i = 0; i < rows ; i++) {
+                for (int j = 3; j < cols; j++) {
+                    if (tauler[i][j]=="[x]" && tauler[i][j-1]=="[x]" && tauler[i][j-2]=="[x]" && tauler[i][j-3]!="[x]" && tauler[i][j-3]!="[O]"){
+                        x=j-3;
+                        break;
+                    }else{
+                        x = (int) (Math.random() * cols);
+                        random=true;
+                    }
+                }
+            }
+            if (random){
+                System.out.println(x);
+                for (int i=tauler.length-1;i>0;i--){
+
+                    if (!jugador2){
+                        if (tauler[i][x]!="[x]" && tauler[i][x]!="[O]"){
+                            tauler[i][x]=caracter;
+                            turno++;
+                            jugador2=true;
+                        }
+                    }
+                }
+            }
+
         }jugador2=false;
+        ComprovarGuanyador(caracter,jugador);
     }
 
     public void Moviment(){
 
         while (!acabat){
 
-            Jugador1();
-            Bot();
-            DibuixarTauler();
-            ComprovarGuanyador("[x]");
-            ComprovarGuanyador("[O]");
+            Jugador1(simbolos[turno%2],nombres[turno%2]);
+            Bot(simbolos[turno%2],nombres[turno%2]);
         }
+        DibuixarTauler();
         System.out.println("El "+guanyador+" ha ganado");
     }
 }
