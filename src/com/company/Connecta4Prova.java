@@ -1,18 +1,16 @@
 package com.company;
 
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
-import java.util.Random;
 import java.util.Scanner;
 
 public class Connecta4Prova {
 
-    private int cols=9;
     private int rows=9;
-    private String[][] tauler=new String[cols][rows];
-    private int caselles=10;
+    private int cols=9;
+    private String[][] tauler=new String[rows][cols];
     private boolean jugador1=true;
     private boolean jugador2=false;
     private boolean acabat=false;
+    private String guanyador;
 
     public void initConnecta4(){
         CrearTauler();
@@ -22,8 +20,8 @@ public class Connecta4Prova {
 
     public void CrearTauler(){
 
-        for (int i = 0; i < cols; i++) {
-            for (int j = 0; j < rows; j++) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
                 tauler[i][j] = "[ ]";
             }
         }
@@ -31,7 +29,7 @@ public class Connecta4Prova {
 
     public void DibuixarTauler(){
 
-        for (int i=1;i<caselles;i++){
+        for (int i=1;i<cols+1;i++){
 
             System.out.print("|"+i+"| ");
 
@@ -47,27 +45,61 @@ public class Connecta4Prova {
         }
     }
 
+    public void ComprovarGuanyador(String caracter){
+
+        for (int i = 0; i < rows ; i++) {
+            for (int j = 0; j < cols -3; j++) {
+                if (tauler[i][j]==caracter && tauler[i][j+1]==caracter && tauler[i][j+2]==caracter && tauler[i][j+3]==caracter){
+                    if (caracter == "[x]"){
+                        guanyador="Jugador 1";
+                    }else{
+                        guanyador="Bot";
+                    }acabat=true;
+                }
+            }
+        }
+
+        for (int i = 0; i < rows -3; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (tauler[i][j]==caracter && tauler[i+1][j]==caracter && tauler[i+2][j]==caracter && tauler[i+3][j]==caracter){
+                    if (caracter == "[x]"){
+                        guanyador="Jugador 1";
+                    }else{
+                        guanyador="Bot";
+                    }acabat=true;
+                }
+            }
+        }
+    }
+
     public void Jugador1(){
 
+        boolean check=true;
         int x;
         while (!jugador2){
+
             Scanner leer = new Scanner(System.in);
 
             System.out.println("Turno del jugador 1");
             System.out.println("Indique la columna:");
 
             x = leer.nextInt();
+            x--;
+            if (x>=0 && x<cols){
 
-            if (x>0 && x<9){
-                x--;
 
-                for (int i=tauler.length-1;i>0;i--){
+                for (int i=rows-1;i>0;i--){
 
-                    if (!jugador2){
+                    if (!jugador2) {
 
-                        if (tauler[i][x]!="[x]" && tauler[i][x]!="[O]"){
-                            tauler[i][x]="[x]";
-                            jugador2=true;
+                        if (tauler[i][x] != "[x]" && tauler[i][x] != "[O]") {
+                            tauler[i][x] = "[x]";
+                            jugador2 = true;
+                        }else {
+                            if (check){
+                                check=false;
+                                System.out.println("Error, esta columna ya esta ocupada");
+                            }
                         }
                     }
                 }
@@ -102,6 +134,12 @@ public class Connecta4Prova {
             Jugador1();
             Bot();
             DibuixarTauler();
+            ComprovarGuanyador("[x]");
+            ComprovarGuanyador("[O]");
         }
+        System.out.println("El "+guanyador+" ha ganado");
     }
 }
+
+
+
