@@ -16,7 +16,7 @@ public class Connecta4Prova {
     private int turno;
 
     public void initConnecta4(){
-        simbolos= new String[]{"[x]","[O]"};
+        simbolos= new String[]{"["+"\033[31m"+"x"+"\u001B[0m"+"]","["+"\033[33m"+"O"+"\u001B[0m"+"]"};
         nombres= new String[]{"Jugador 1","Jugador 2"};
 
         CrearTauler();
@@ -111,7 +111,7 @@ public class Connecta4Prova {
 
                     if (!jugador2) {
 
-                        if (tauler[i][x] != "[x]" && tauler[i][x] != "[O]") {
+                        if (tauler[i][x] != simbolos[turno%2] && tauler[i][x] != simbolos[1-(turno%2)]) {
                             tauler[i][x] = caracter;
                             turno++;
                             jugador2 = true;
@@ -140,7 +140,7 @@ public class Connecta4Prova {
 
             for (int i = 0; i < rows ; i++) {
                 for (int j = 0; j < cols -3; j++) {
-                    if (tauler[i][j]=="[x]" && tauler[i][j+1]=="[x]" && tauler[i][j+2]=="[x]" && tauler[i][j+3]!="[x]" && tauler[i][j+3]!="[O]"){
+                    if (tauler[i][j]==simbolos[turno%2] && tauler[i][j+1]==simbolos[turno%2] && tauler[i][j+2]==simbolos[turno%2] && tauler[i][j+3]!=simbolos[turno%2] && tauler[i][j+3]!=simbolos[1-(turno%2)]){
                         x=j+3;
                         break;
                     }else{
@@ -151,7 +151,7 @@ public class Connecta4Prova {
             }
             for (int i = 0; i < rows ; i++) {
                 for (int j = 3; j < cols; j++) {
-                    if (tauler[i][j]=="[x]" && tauler[i][j-1]=="[x]" && tauler[i][j-2]=="[x]" && tauler[i][j-3]!="[x]" && tauler[i][j-3]!="[O]"){
+                    if (tauler[i][j]==simbolos[turno%2] && tauler[i][j-1]==simbolos[turno%2] && tauler[i][j-2]==simbolos[turno%2] && tauler[i][j-3]!=simbolos[turno%2] && tauler[i][j-3]!=simbolos[1-(turno%2)]){
                         x=j-3;
                         break;
                     }else{
@@ -165,7 +165,7 @@ public class Connecta4Prova {
                 for (int i=tauler.length-1;i>0;i--){
 
                     if (!jugador2){
-                        if (tauler[i][x]!="[x]" && tauler[i][x]!="[O]"){
+                        if (tauler[i][x]!=simbolos[turno%2] && tauler[i][x]!=simbolos[1-(turno%2)]){
                             tauler[i][x]=caracter;
                             turno++;
                             jugador2=true;
