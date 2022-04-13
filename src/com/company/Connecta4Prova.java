@@ -20,9 +20,9 @@ public class Connecta4Prova {
         simbolos= new String[]{"["+"\033[31m"+"x"+"\u001B[0m"+"]","["+"\033[33m"+"O"+"\u001B[0m"+"]"};
         nombres= new String[]{"Jugador 1","Jugador 2"};
 
-        System.out.println("Modo de juego");
-        System.out.println("1.PVP");
-        System.out.println("2.PVC");
+        System.out.println("\033[35m"+"Modo de juego"+"\u001B[0m");
+        System.out.println("\033[34m"+"1.PVP"+"\u001B[0m");
+        System.out.println("\033[31m"+"2.PVC"+"\u001B[0m");
 
         CrearTauler();
         Moviment();
@@ -128,14 +128,14 @@ public class Connecta4Prova {
                                 turno++;
                                 jugador2 = true;
                             }else {
-                                System.out.println("Error, esta columna ya esta ocupada");
+                                System.out.println("\033[31m"+"Error, esta columna ya esta ocupada"+"\u001B[0m");
                                 DibuixarTauler();
                             }
                         }
                     }
                 }
             }else{
-                System.out.println("Error, seleccione una columna válida");
+                System.out.println("\033[31m"+"Error, seleccione una columna válida"+"\u001B[0m");
             }
         }
         jugador2=false;
@@ -184,7 +184,7 @@ public class Connecta4Prova {
                 Jugador1(simbolos[turno%2],nombres[turno%2]);
             }
             DibuixarTauler();
-            System.out.println("El "+guanyador+" ha ganado");
+            System.out.println("\033[32m"+"El "+guanyador+" ha ganado"+"\u001B[0m");
         }else if(x==2){
 
             while (!acabat){
@@ -193,9 +193,9 @@ public class Connecta4Prova {
                 Bot(simbolos[turno%2],nombres[turno%2]);
             }
             DibuixarTauler();
-            System.out.println("El "+guanyador+" ha ganado");
+            System.out.println("\033[32m"+"El "+guanyador+" ha ganado"+"\u001B[0m");
         }else {
-            System.out.println("Error, seleccione una opción válida");
+            System.out.println("\033[31m"+"Error, seleccione una opción válida"+"\u001B[0m");
             initConnecta4();
         }
     }
